@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+<div th:include="fragments/head :: head"></div>
+<link th:href="@{/css/time-line-style.css}" type="text/css"
+	rel="stylesheet" media="screen,projection" />
+</head>
+<body>
+	<div th:include="fragments/header :: header"></div>
+	<div class="container page">
+		<div
+			th:include="fragments/admin_producao_academica_menu_navegacao :: admin_producao_academica_menu_navegacao"></div>
+
+
+
+
+
+		<table class="responsive-table">
+			<thead>
+				<tr>
+					<th>Número de colaboradores</th>
+					<th>Número de projetos em elaboração</th>
+					<th>Número de projetos em andamento</th>
+					<th>Número de projetos concluídos</th>
+					<th>Número total de projetos</th>
+					<th>Número de publicações</th>
+					<th>Número de orientações</th>					
+				</tr>
+			</thead>
+
+			<tbody>
+
+				<tr>
+					<td th:text="${relatorio.totalColaboradores}"></td>
+			        <td th:text="${relatorio.totalProjetoEmElaboracao}"></td>
+			        <td th:text="${relatorio.totalProjetoEmAndamento}"></td>
+			        <td th:text="${relatorio.totalProjetoConcluidos}"></td>
+			        <td th:text="${relatorio.totalProjetos}"></td>
+			        <td th:text="${relatorio.totalPublicacoes}"></td>
+			        <td th:text="${relatorio.totalOrientacoes}"></td>
+				</tr>
+				</tbody>
+		</table>
+
+
+	</div>
+
+	<div th:include="fragments/footer :: footer"></div>
+	<div th:include="fragments/CalendarioJS :: calendario"></div>
+	<script type="text/javascript" th:src="@{/js/modernizr.js}"></script>
+	<script type="text/javascript" th:src="@{/js/timeline.main.js}"></script>
+	<script type="text/javascript">
+		$(document)
+				.ready(
+						function() {
+
+							buscar = function(e, componente, elementoABuscar) {
+								var filtro = e;
+								var componente = componente;
+								var elementoABuscar = elementoABuscar;
+
+								var nomeFiltro = removerAcentos(filtro.value
+										.toLowerCase());
+								var componenteCompleto = document
+										.getElementsByClassName(componente);
+								var elemento = document
+										.getElementsByClassName(elementoABuscar);
+
+								for (var i = elemento.length - 1; i >= 0; i--) {
+									var conteudoBusca = removerAcentos(elemento[i].firstElementChild.innerHTML);
+									var corresponde = conteudoBusca
+											.toLowerCase().indexOf(nomeFiltro) >= 0;
+									componenteCompleto[i].style.display = corresponde ? ''
+											: 'none';
+
+								}
+
+							};
+						});
+
+		$(document).ready(function() {
+
+			//Js para o dropdown
+			$('.dropdown-button').dropdown({
+				inDuration : 300,
+				outDuration : 225,
+				constrain_width : false, // Does not change width of dropdown to that of the activator
+				gutter : 0, // Spacing from edge
+				belowOrigin : false, // Displays dropdown below the button
+				alignment : 'left' // Displays dropdown with edge aligned to the left of button
+			});
+
+		});
+
+		/**
+		 * Remove acentos de strings
+		 * @param  {String} string acentuada
+		 * @return {String} string sem acento
+		 */
+		var map = {
+			"â" : "a",
+			"Â" : "A",
+			"à" : "a",
+			"À" : "A",
+			"á" : "a",
+			"Á" : "A",
+			"ã" : "a",
+			"Ã" : "A",
+			"ê" : "e",
+			"Ê" : "E",
+			"è" : "e",
+			"È" : "E",
+			"é" : "e",
+			"É" : "E",
+			"î" : "i",
+			"Î" : "I",
+			"ì" : "i",
+			"Ì" : "I",
+			"í" : "i",
+			"Í" : "I",
+			"õ" : "o",
+			"Õ" : "O",
+			"ô" : "o",
+			"Ô" : "O",
+			"ò" : "o",
+			"Ò" : "O",
+			"ó" : "o",
+			"Ó" : "O",
+			"ü" : "u",
+			"Ü" : "U",
+			"û" : "u",
+			"Û" : "U",
+			"ú" : "u",
+			"Ú" : "U",
+			"ù" : "u",
+			"Ù" : "U",
+			"ç" : "c",
+			"Ç" : "C"
+		};
+
+		function removerAcentos(s) {
+			return s.replace(/[\W\[\] ]/g, function(a) {
+				return map[a] || a
+			})
+		};
+	</script>
+</body>
+</html>

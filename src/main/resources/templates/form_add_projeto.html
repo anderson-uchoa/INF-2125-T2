@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<div th:include="fragments/head :: head"></div>
+</head>
+<body>
+	<div th:include="fragments/header :: header"></div>
+	<div class="container page">
+		<div
+			th:include="fragments/admin_projeto_menu_navegacao :: admin_projeto_menu_navegacao"></div>
+
+
+		<div class="row">
+			<h3 class="col s12" id="addInformacoesBasicas">Adicionar Projeto
+			</h3>
+		</div>
+
+		<form th:action="@{/projeto/adicionarProjeto}" th:object="${projeto}"
+			method="post">
+
+			<div class="row">
+				<div class="input-field col m6 s6">
+					<input id="titulo_projeto" type="text" required="required"  th:field="*{titulo}" /> <label
+						for="titulo_projeto">Titulo</label>
+				</div>
+				<div class="input-field col">
+					
+					<div th:if="${#lists.isEmpty(professores)}">
+					
+				<span>Professor Responsável:</span> <select
+								required="required" th:name="idProfessor">
+								<option value="" th:disabled="disabled" th:selected="selected"> É necessário 
+								cadastrar um professor nos sistema</option> </select>
+						</div>
+					
+					
+					<div class="col s12" th:if="${!#lists.isEmpty(professores)}">
+						<div class="input-field ">
+							<span>Professor Responsável:</span> <select
+								required="required" th:name="idProfessor">
+								<option value="" th:selected="selected">Escolha
+									o professor responsável</option>
+								<option th:each="professor : ${professores}"
+									th:value="${professor.id}" th:text="${professor.nome}"></option>
+							</select>
+
+						</div>
+
+
+					</div>
+				</div>
+			</div>
+			<div class="row">
+
+				<div class="input-field col m6 s6">
+					<input id="data_inicio_projeto" type="text" class="datepicker"
+						required="required" th:field="*{dataInicio}"/> <label for="data_inicio_projeto">Data
+						de Início</label>
+				</div>
+
+				<div class="input-field col m6 s6">
+					<input id="data_termino_projeto" type="text" class="datepicker"
+						required="required" th:field="*{dataTermino}" /> <label for="data_termino_projeto">Data
+						de Término</label>
+				</div>
+
+			</div>
+
+			<div class="row">
+
+				<div class="input-field col m6 s6">
+					<input id="agencia_financiadora_projeto" type="text"
+						required="required"  th:field="*{agenciaFinanciadora}" /> <label for="agencia_financiadora_projeto">Agência
+						Financiadora</label>
+				</div>
+
+				<div class="input-field col m6 s6">
+					<input id="valor_financiado_projeto" type="number" step="0.01"
+						min="0" required="required" th:field="*{valorFinanciado}" /> <label
+						for="valor_financiado_projeto">Valor Financiado</label>
+				</div>
+
+			</div>
+
+			<div class="row">
+
+				<div class="input-field col m6 s6">
+					<textarea id="objetivo_projeto" class="materialize-textarea"
+						length="255" maxlength="255" required="required" th:field="*{objetivo}" ></textarea>
+					<label for="objetivo_projeto">Objetivo</label>
+				</div>
+				<div class="input-field col m6 s4">
+					<textarea id="descricao_projeto" required="required" class="materialize-textarea"
+						length="255" maxlength="255" th:field="*{descricao}"></textarea>
+					<label for="descricao_projeto">Descrição</label>
+				</div>
+
+
+
+			</div>
+
+<div class="input-field col s12">
+				<button type="submit"
+					class="waves-effect waves-light btn white-text">
+					Adicionar Projeto<i aria-hidden="true" class="fa fa-floppy-o right"></i>
+				</button>
+			</div>
+
+		</form>
+
+	</div>
+
+	<div th:include="fragments/footer :: footer"></div>
+		<div th:include="fragments/CalendarioJS :: calendario"></div>
+</body>
+</html>

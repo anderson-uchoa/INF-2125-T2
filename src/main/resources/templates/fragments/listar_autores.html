@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+</head>
+<body>
+    <div th:fragment="listar(label, autores)">
+		<p th:unless="${#lists.isEmpty(autores)}"><b th:text="${label}"></b></p>
+		<blockquote>
+			<p th:each="autor : ${autores}" th:text="${autor.nome}">Nome de autor</p>
+		</blockquote>
+	</div>
+	
+	 <div th:fragment="listar-inline(label, autores)">
+		<p th:unless="${#lists.isEmpty(autores)}"><b th:text="${label}"></b></p>
+		<span th:each="autor count : ${autores}"  
+			th:text="${count.index != (#lists.size(autores) - 1)} ? |${autor.nome}, | : ${autor.nome}">Nome de participante</span>
+	</div>
+	
+	<div th:fragment="listar-clean(label, autores)">
+		<p th:unless="${#lists.isEmpty(autores)}"><b th:text="${label}"></b></p>
+		<p th:each="autor : ${autores}" > <small th:text="${autor.nome}"></small></p>
+	</div>
+</body>
+</html>
+	
+	
+	
+	
+	

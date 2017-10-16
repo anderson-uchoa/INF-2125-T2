@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<div th:include="fragments/head :: head"></div>
+</head>
+<body>
+  
+    <div th:fragment="atualizar_colaborador_professor(colaborador)">
+	   <div class="input-field">
+				    <label for="nome">Nome</label>
+				    <input type="text" name="nome" th:value="${colaborador.nome}"/>
+				     </div>
+				 
+				     <div class="input-field">
+				    <label for="email">E-mail</label>
+				    <input type="text" name="email" th:value="${colaborador.email}"/>
+					</div>   
+				
+	
+	</div>
+	
+	
+</body>
+</html>

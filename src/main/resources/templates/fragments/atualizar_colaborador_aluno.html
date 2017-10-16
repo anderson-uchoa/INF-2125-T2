@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<div th:include="fragments/head :: head"></div>
+</head>
+<body>
+  
+    <div th:fragment="atualizar_colaborador_aluno(colaborador)">
+	  
+	   <div class="input-field col m6 s6">
+				    <label for="nome">Nome</label>
+				    <input type="text" name="nome" th:value="${colaborador.nome}"/>
+		</div>
+				 
+			 <div class="input-field col m6 s6">
+			    <label for="email">E-mail</label>
+				    <input type="text" name="email" th:value="${colaborador.email}"/>
+			</div> 
+			<div class="input-field col m6 s6">
+				<input id="data_ingresso_aluno" type="text" class="datepicker"
+					th:value="${#dates.format(colaborador.dataDeIngresso, 'dd-MMM-yyyy')}" required="required" /> 
+					<label
+					for="data_ingresso_aluno">Data de Ingesso</label>
+			</div>  
+				
+	
+	</div>
+	
+	
+</body>
+	<div th:include="fragments/CalendarioJS :: calendario"></div>
+
+</html>

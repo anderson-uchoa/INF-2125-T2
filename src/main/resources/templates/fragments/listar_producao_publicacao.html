@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+<body>
+
+	<div th:fragment="listar_producao_publicacao(producao)">
+
+		<div class="col s4">
+			<p>
+				<b>Titulo</b><span th:text="${producao.titulo}"></span>
+			</p>
+			<p>
+				<b>Conferência: </b><span th:text="${producao.nomeConferencia}"></span>
+			</p>
+			<p>
+				<b>Ano: </b><span th:text="${producao.anoPublicacao}"></span>
+			</p>
+		</div>
+		<div class="col s4">
+			<p>
+				<b>Projeto de Pesquisa: </b> <span
+					th:if="${producao.projeto != null}"
+					th:text="${producao.projeto.titulo}"></span> <span
+					th:if="${producao.projeto == null}">Não esta associado a
+					um projeto de pesquisa</span>
+			</p>
+		</div>
+
+	</div>
+
+	<div class="col s4">
+		<div
+			th:include="fragments/listar_autores :: listar-clean('Autor(es):', ${producao.autores})"></div>
+	</div>
+
+	
+
+
+</body>
+</html>
+
+
+
+

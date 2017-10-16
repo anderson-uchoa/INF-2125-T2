@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+<body>
+
+	<div th:fragment="listar_colaborador_pesquisador(colaborador)">
+
+		<div class="col s4">
+			<p>
+				<b>E-mail:
+				<br />
+				 </b><span th:text="${colaborador.email}"></span>
+			</p>
+		</div>
+		
+		
+		<div class="col s4">
+	
+	
+	<div th:if="${#lists.isEmpty(colaborador.participacaoProjetos)}">
+				<b>Projeto(s) concluídos:</b>
+							<br />
+	
+				<small>Nenhum projeto associado</small>
+			</div>
+		<div th:unless="${#lists.isEmpty(colaborador.participacaoProjetos)}">
+				<b>Projeto(s) concluídos:</b>
+				<p th:each="participacao: ${colaborador.participacaoProjetos}" 
+				th:if="${participacao.projeto.statusDoProjeto != T(br.puc.pss.INF2125T2.model.enumeration.StatusDoProjeto).EM_ELABORACAO AND participacao.projeto.statusDoProjeto != T(br.puc.pss.INF2125T2.model.enumeration.StatusDoProjeto).EM_ANDAMENTO}"><small th:text="${participacao.projeto.titulo}"></small></p>
+		</div>
+			
+			</div>
+		
+	<div class="col s4">
+	<div th:if="${#lists.isEmpty(colaborador.participacaoProjetos)}">
+				<b>Projeto(s) em andamento:</b>
+							<br />
+	
+				<small>Nenhum projeto em andamento</small>
+			</div>
+	
+	
+		<div th:unless="${#lists.isEmpty(colaborador.participacaoProjetos)}">
+				<b>Projeto(s) em andamento:</b>
+				<p th:each="participacao: ${colaborador.participacaoProjetos}" 
+				th:if="${participacao.projeto.statusDoProjeto != T(br.puc.pss.INF2125T2.model.enumeration.StatusDoProjeto).CONCLUIDO AND participacao.projeto.statusDoProjeto != T(br.puc.pss.INF2125T2.model.enumeration.StatusDoProjeto).EM_ELABORACAO}"><small th:text="${participacao.projeto.titulo}"></small></p>
+			</div>
+			
+			</div>
+		
+		
+		</div>
+		
+				
+	
+</body>
+</html>
+
+
+
+

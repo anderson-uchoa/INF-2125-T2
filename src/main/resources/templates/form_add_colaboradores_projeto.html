@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<div th:include="fragments/head :: head"></div>
+</head>
+<body>
+	<div th:include="fragments/header :: header"></div>
+	<div class="container page">
+		<div
+			th:include="fragments/admin_projeto_menu_navegacao :: admin_projeto_menu_navegacao"></div>
+
+
+		<div class="row">
+			<h3 class="col s12">Adicionar Colaboradores</h3>
+			<h5
+					th:text="| Incluindo colaborador(es) ao projeto ${projeto.titulo} |"></h5>
+				<p>Você está adicionando o projeto</p>
+		</div>
+			<form th:action="@{'/projeto/adicionarColaboradores/' + ${projeto.id}}" method="post">
+				<div th:if="${not #lists.isEmpty(colaboradores)}">
+					<div th:each="colaborador, count : ${colaboradores}">
+						<input th:type="checkbox" th:id="${count.index}"
+							name="colaboradoresIds" th:value="${colaborador.id}" /> <label
+							class="black-text" th:for="${count.index}"
+							th:text="${colaborador.nome}"></label>
+					</div>
+					<br />
+					<button type="submit"
+						class="waves-effect waves-light btn white-text">Adicionar Colaboradores	</button>
+				</div>
+			</form>
+		
+	</div>
+
+
+	<div th:include="fragments/footer :: footer"></div>
+	<div th:include="fragments/CalendarioJS :: calendario"></div>
+</body>
+</html>

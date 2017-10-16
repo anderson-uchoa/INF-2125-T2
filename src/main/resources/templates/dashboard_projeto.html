@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+<div th:include="fragments/head :: head"></div>
+<link th:href="@{/css/style.css}" type="text/css" rel="stylesheet"
+	media="screen,projection" />
+</head>
+<body>
+	<div th:include="fragments/header :: header"></div>
+	<div class="container page">
+		<div
+			th:include="fragments/admin_projeto_menu_navegacao :: admin_projeto_menu_navegacao"></div>
+
+
+		<div class="row">
+			<div class="col s12">
+				<div class="input-field row">
+					<input placeholder="Procurando um projeto especifico?"
+						id="filtro-nome" type="text"
+						oninput="buscar(this,'card-stacked','card-content')"
+						class="col s11 validate" /><a
+						class="btn-floating btn-large waves-effect waves-light right">
+						<i class="material-icons">search</i>
+					</a>
+				</div>
+			</div>
+		</div>
+
+		<div th:if="${#lists.isEmpty(projetos)}">
+			<b>Não existem nenhum projeto cadastrado no sistema.</b>
+		</div>
+
+		<div class="col s12" th:if="${!#lists.isEmpty(projetos)}">
+			<div class="col s12 m7" th:each="projeto : ${projetos}">
+				<div class="card horizontal">
+					<div class="card-stacked">
+						<div class="card-content">
+							<span class="card-title"
+								th:text="'Projeto: ' + ${projeto.titulo}"> </span>
+							<div class="chip" th:text="${projeto.statusDoProjeto.status}">
+							</div>
+
+							<div class="row">
+								<div class="col s4">
+									<div
+										th:include="fragments/listar_participacoes :: listar-clean('Colaborador(es) alocados:', ${projeto.participacaoProjetos})"></div>
+								</div>
+								<div class="col s4">
+									<p>
+										<b>Data de início: </b> <span
+											th:text="${#dates.format(projeto.dataInicio,'dd/MM/yyyy')}"></span>
+									</p>
+									<p>
+										<b>Data de término: </b><span
+											th:text="${#dates.format(projeto.dataTermino,'dd/MM/yyyy')}"></span>
+									</p>
+								</div>
+
+								<div class="col s4">
+									<p>
+										<b>Agência financiadora: </b><span
+											th:text="${projeto.agenciaFinanciadora}"></span>
+									</p>
+									<p>
+										<b>Valor financiado: </b><span
+											th:text="${projeto.valorFinanciado}"></span>
+									</p>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col s12">
+									<p>
+										<b>Objeto: </b><span th:text="${projeto.objetivo}"></span>
+									</p>
+
+									<p>
+										<b>Descrição: </b><span th:text="${projeto.descricao} "></span>
+									</p>
+
+								</div>
+
+							</div>
+
+						</div>
+
+						<div class="card-action">
+							<div class="row">
+								<small>Opções</small> <br /> 
+								
+								    <a
+									th:if="${projeto.statusDoProjeto != T(br.puc.pss.INF2125T2.model.enumeration.StatusDoProjeto).CONCLUIDO AND projeto.statusDoProjeto != T(br.puc.pss.INF2125T2.model.enumeration.StatusDoProjeto).EM_ANDAMENTO}"
+									th:href="@{'/projeto/adicionarColaboradores/'+ ${projeto.id}}"
+									class="btn waves-effect waves-light btn white-text">
+									Adicionar Colaboradores </a>
+									
+									<a
+									th:if="${projeto.statusDoProjeto == T(br.puc.pss.INF2125T2.model.enumeration.StatusDoProjeto).EM_ELABORACAO}"
+									th:attr="href='#modalDarAndamento' + ${projeto.id}"
+									class="waves-effect waves-light btn white-text modal-trigger">Dar
+									Andamento</a> 
+									
+							        <a
+									th:if="${projeto.statusDoProjeto == T(br.puc.pss.INF2125T2.model.enumeration.StatusDoProjeto).EM_ANDAMENTO AND !#lists.isEmpty(projeto.publicacoes)}"
+									th:attr="href='#modalDarConcluido' + ${projeto.id}"
+									class="waves-effect waves-light btn white-text  modal-trigger ">Dar
+									Como Concluído</a> 
+											
+										
+									<a
+									th:if="${projeto.statusDoProjeto == T(br.puc.pss.INF2125T2.model.enumeration.StatusDoProjeto).EM_ANDAMENTO AND #lists.isEmpty(projeto.publicacoes)}"
+									class="waves-effect waves-light btn white-text"
+									onclick="Materialize.toast('Devem haver publicações para concluir o projeto!', 4000)">Dar
+									Como Concluído</a> 
+									
+									<a
+									th:if="${!#lists.isEmpty(projeto.publicacoes)}"
+									th:href="@{'/projeto/publicacaoDoProjeto/'+ ${projeto.id}}"
+									class="btn waves-effect waves-light btn white-text"> Ver
+									Publicações</a>									
+									
+									<a
+									th:if="${#lists.isEmpty(projeto.publicacoes)}"
+									class="waves-effect waves-light btn white-text"
+									onclick="Materialize.toast('Não existem publicações vinculadas a este projeto!', 4000)">Ver
+									Publicações</a> 
+									
+
+							</div>
+
+						</div>
+					</div>
+
+
+				</div>
+				<div th:attr="id='modalDarAndamento' + ${projeto.id}" class="modal">
+					<div class="modal-content">
+						<h4>Alterando Status para Andamento</h4>
+						<h5 th:text="${projeto.titulo}"></h5>
+						<p>Tem certeza que quer dar andamento ao projeto</p>
+					</div>
+					<form 
+						th:action="@{'/projeto/darAndamentoProjeto/' + ${projeto.id}}"
+						method="post">
+						<div class="modal-footer">
+							<button type="submit"
+								class="modal-action modal-close waves-effect btn-flat">Confirmar</button>
+							<a href="#"
+								class="modal-action modal-close waves-effect btn-flat">Cancelar</a>
+						</div>
+					</form>
+				</div>
+
+
+				<div th:attr="id='modalDarConcluido' + ${projeto.id}" class="modal">
+					<div class="modal-content">
+						<h4>Alterando Status para Concluído</h4>
+						<h5 th:text="${projeto.titulo}"></h5>
+				    
+	 				<p>Tem certeza quer dar o projeto como concluído?</p>
+					<form 
+						th:action="@{'/projeto/darComoConcluidoProjeto/' + ${projeto.id}}"
+						method="post">
+						<div class="modal-footer">
+							<button type="submit"
+								class="modal-action modal-close waves-effect btn-flat">Confirmar</button>
+							<a href="#"
+								class="modal-action modal-close waves-effect btn-flat">Cancelar</a>
+						</div>
+					</form>
+									
+				 </div>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+
+
+
+
+	<!-- footer -->
+	<div th:include="fragments/footer :: footer"></div>
+	<div th:include="fragments/CalendarioJS :: calendario"></div>
+	<script type="text/javascript" th:src="@{/js/modernizr.js}"></script>
+	<script type="text/javascript" th:src="@{/js/timeline.main.js}"></script>
+	<script type="text/javascript">
+		$(document)
+				.ready(
+						function() {
+
+							buscar = function(e, componente, elementoABuscar) {
+								var filtro = e;
+								var componente = componente;
+								var elementoABuscar = elementoABuscar;
+
+								var nomeFiltro = removerAcentos(filtro.value
+										.toLowerCase());
+								var componenteCompleto = document
+										.getElementsByClassName(componente);
+								var elemento = document
+										.getElementsByClassName(elementoABuscar);
+
+								for (var i = elemento.length - 1; i >= 0; i--) {
+									var conteudoBusca = removerAcentos(elemento[i].firstElementChild.innerHTML);
+									var corresponde = conteudoBusca
+											.toLowerCase().indexOf(nomeFiltro) >= 0;
+									componenteCompleto[i].style.display = corresponde ? ''
+											: 'none';
+
+								}
+
+							};
+						});
+
+		/**
+		 * Remove acentos de strings
+		 * @param  {String} string acentuada
+		 * @return {String} string sem acento
+		 */
+		var map = {
+			"â" : "a",
+			"Â" : "A",
+			"à" : "a",
+			"À" : "A",
+			"á" : "a",
+			"Á" : "A",
+			"ã" : "a",
+			"Ã" : "A",
+			"ê" : "e",
+			"Ê" : "E",
+			"è" : "e",
+			"È" : "E",
+			"é" : "e",
+			"É" : "E",
+			"î" : "i",
+			"Î" : "I",
+			"ì" : "i",
+			"Ì" : "I",
+			"í" : "i",
+			"Í" : "I",
+			"õ" : "o",
+			"Õ" : "O",
+			"ô" : "o",
+			"Ô" : "O",
+			"ò" : "o",
+			"Ò" : "O",
+			"ó" : "o",
+			"Ó" : "O",
+			"ü" : "u",
+			"Ü" : "U",
+			"û" : "u",
+			"Û" : "U",
+			"ú" : "u",
+			"Ú" : "U",
+			"ù" : "u",
+			"Ù" : "U",
+			"ç" : "c",
+			"Ç" : "C"
+		};
+
+		function removerAcentos(s) {
+			return s.replace(/[\W\[\] ]/g, function(a) {
+				return map[a] || a
+			})
+		};
+	</script>
+</body>
+</html>

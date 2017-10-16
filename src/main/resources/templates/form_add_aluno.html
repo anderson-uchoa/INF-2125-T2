@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<div th:include="fragments/head :: head"></div>
+</head>
+<body>
+	<div th:include="fragments/header :: header"></div>
+	<div class="container page">
+		<div
+			th:include="fragments/admin_projeto_menu_navegacao :: admin_projeto_menu_navegacao"></div>
+
+
+		<div class="row">
+			<h3 class="col s12">Adicionar Aluno</h3>
+		</div>
+		<form th:action="@{/colaborador/adicionarAlunoNovo}" method="post"
+			th:object="${aluno}">
+			<div class="input-field col m6 s6">
+				<input type="text" id="nome_aluno" th:field="*{nome}"
+					required="required" /> <label for="nome_aluno">Nome</label>
+			</div>
+
+			<div class="input-field col m6 s6">
+				<input id="email" type="text" th:field="*{email}"
+					required="required" /> <label for="email">E-mail</label>
+			</div>
+
+			<div class="input-field col m6 s6">
+				<input id="data_ingresso_aluno" type="text" class="datepicker"
+					th:field="*{dataDeIngresso}" required="required" /> 
+					<label
+					for="data_ingresso_aluno">Data de Ingresso</label>
+			</div>
+
+
+			<div class="input-field col m5 s6">
+				<span>Tipo de Aluno:</span> <br /> 
+				<input name="group1" th:field="*{tipoAluno}"
+					id="aluno_graduacao" th:value="GRADUACAO" type="radio"/> <label
+					for="aluno_graduacao">Graduação</label> 
+					<input name="group1" th:field="*{tipoAluno}"
+					id="aluno_mestrado" th:value="MESTRADO" type="radio" /> <label
+					for="aluno_mestrado">Mestrado</label> 
+					<input name="group1" th:field="*{tipoAluno}"
+					id="aluno_doutorado" th:value="DOUTORADO" type="radio" /> <label
+					for="aluno_doutorado">Doutorado</label>
+
+			</div>
+			<br />
+			
+<div class="input-field col m5 s6" id="regime">
+				<span>Regime do Curso:</span> <br /> 
+				<input name="group1" th:field="*{tipoRegimeCurso}"
+					id="regime_integral" th:value="INTEGRAL" type="radio" /> <label
+					for="regime_integral">Integral</label> 
+					
+					<input name="group1" th:field="*{tipoRegimeCurso}"
+					id="regime_parcial" th:value="PARCIAL" type="radio" /> <label
+					for="regime_parcial">Parcial</label> 
+					
+					<input name="group1" th:field="*{tipoRegimeCurso}"
+					id="regime_nao_aplicavel" th:value="NAO_SE_APLICA" type="radio"  /> <label
+					for="regime_nao_aplicavel">Não se aplica</label>
+
+			</div>
+
+<br />
+						
+			<div class="input-field col m2 s6">
+				<div class="col s12" th:if="${#lists.isEmpty(professores)}">
+				
+				<span>Orientador:</span> <br /> 
+							<select required="required"  th:field="*{professorOrientador}">
+								<option value="" th:disabled="disabled" th:selected="selected">Não existe Professor cadastrado no sistema.</option>
+						</select>
+				</div>
+				
+				<div class="col s12" th:if="${!#lists.isEmpty(professores)}">
+					<div class="col s12 m7">
+						<div class="input-field col s12">
+							<span>Orientador:</span> <br /> 
+							<select  required="required" th:field="*{professorOrientador}">
+								<option value="" th:disabled="disabled" th:selected="selected" >Escolha
+									o orientador</option>
+								<option th:each="professor : ${professores}"
+									th:value="${professor.id}" th:text="${professor.nome}"></option>
+							</select>
+
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+
+			<div class="input-field col s12">
+				<button type="submit"
+					class="waves-effect waves-light btn white-text">
+					Adicionar Aluno<i aria-hidden="true" class="fa fa-floppy-o right"></i>
+				</button>
+			</div>
+		</form>
+
+	</div>
+
+	<div th:include="fragments/footer :: footer"></div>
+	<div th:include="fragments/CalendarioJS :: calendario"></div>
+
+
+</body>
+</html>

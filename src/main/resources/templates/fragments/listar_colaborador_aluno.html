@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+<body>
+
+	<div th:fragment="listar_colaborador_aluno(colaborador)">
+
+		<div class="col s4">
+			<p>
+				<b>E-mail: </b><span th:text="${colaborador.email}"></span>
+			</p>
+
+			<p>
+				<b>Data de Ingresso: </b><span
+					th:text="${#dates.format(colaborador.dataDeIngresso, 'dd-MMM-yyyy')}"></span>
+			</p>
+
+			<p>
+				<b>Orientador: </b><span
+					th:text="${colaborador.professorOrientador.nome}"></span>
+			</p>
+
+			<div
+				th:if="${colaborador.tipoAluno != T(br.puc.pss.INF2125T2.model.enumeration.TipoDeAluno).GRADUACAO}">
+
+				<p>
+					<b>Regime de curso: </b><span
+						th:text="${colaborador.tipoRegimeCurso}"></span>
+				</p>
+
+			</div>
+
+
+		</div>
+			<div class="col s4">
+	
+	
+	<div th:if="${#lists.isEmpty(colaborador.participacaoProjetos)}">
+				<b>Projeto(s) concluídos:</b>
+							<br />
+				<small>Nenhum projeto associado</small>
+			</div>
+		<div th:unless="${#lists.isEmpty(colaborador.participacaoProjetos)}">
+				<b>Projeto(s) concluídos:</b>
+				<p th:each="participacao: ${colaborador.participacaoProjetos}" 
+				th:if="${participacao.projeto.statusDoProjeto != T(br.puc.pss.INF2125T2.model.enumeration.StatusDoProjeto).EM_ELABORACAO AND participacao.projeto.statusDoProjeto != T(br.puc.pss.INF2125T2.model.enumeration.StatusDoProjeto).EM_ANDAMENTO}"><small th:text="${participacao.projeto.titulo}"></small></p>
+		</div>
+			
+			</div>
+		
+	<div class="col s4">
+	<div th:if="${#lists.isEmpty(colaborador.participacaoProjetos)}">
+				<b>Projeto(s) em andamento:</b>
+							<br />
+	
+				<small>Nenhum projeto em andamento</small>
+			</div>
+	
+	
+		<div th:unless="${#lists.isEmpty(colaborador.participacaoProjetos)}">
+				<b>Projeto(s) em andamento:</b>
+				<p th:each="participacao: ${colaborador.participacaoProjetos}" 
+				th:if="${participacao.projeto.statusDoProjeto != T(br.puc.pss.INF2125T2.model.enumeration.StatusDoProjeto).CONCLUIDO AND participacao.projeto.statusDoProjeto != T(br.puc.pss.INF2125T2.model.enumeration.StatusDoProjeto).EM_ELABORACAO}"><small th:text="${participacao.projeto.titulo}"></small></p>
+			</div>
+			
+			</div>
+
+	</div>
+
+
+
+</body>
+</html>
+
+
+
+

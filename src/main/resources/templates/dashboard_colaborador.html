@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+<div th:include="fragments/head :: head"></div>
+<link th:href="@{/css/time-line-style.css}" type="text/css"
+	rel="stylesheet" media="screen,projection" />
+</head>
+<body>
+	<div th:include="fragments/header :: header"></div>
+	<div class="container page">
+		<div
+			th:include="fragments/admin_colaborador_menu_navegacao :: admin_colaborador_menu_navegacao"></div>
+
+		<div class="row">
+			<div class="col s12">
+				<div class="input-field row">
+					<input placeholder="Procurando um colaborador em especifico?"
+						id="filtro-nome" type="text"
+						oninput="buscar(this,'card-stacked','card-content')"
+						class="col s11 validate" /><a
+						class="btn-floating btn-large waves-effect waves-light right">
+						<i class="material-icons">search</i>
+					</a>
+				</div>
+			</div>
+		</div>
+
+<div th:if="${#lists.isEmpty(colaboradores)}">
+				<b>Não existem nenhum colaborador cadastrado no sistema.</b>
+		</div>
+		
+		<div class="col s12" th:if="${!#lists.isEmpty(colaboradores)}">
+			<div class="col s12 m7" th:each="colaborador : ${colaboradores}">
+				<div class="card horizontal">
+					<div class="card-stacked">
+						<div class="card-content">
+							<span class="card-title" th:text="${colaborador.nome}"> </span>
+
+							<div
+								th:if="${colaborador instanceof T(br.puc.pss.INF2125T2.model.Aluno)}"
+								class="chip" th:text="${ 'ALUNO DE ' + colaborador.tipoAluno}">
+							</div>
+
+							<div
+								th:unless="${colaborador instanceof T(br.puc.pss.INF2125T2.model.Aluno)}"
+								class="chip" th:text="${colaborador.tipoDeColaborador}"></div>
+
+
+
+							<div class="row">
+
+								<div
+									th:if="${colaborador instanceof T(br.puc.pss.INF2125T2.model.Aluno)}"
+									th:include="fragments/listar_colaborador_aluno :: listar_colaborador_aluno(${colaborador})">
+								</div>
+
+
+								<div
+									th:if="${colaborador instanceof T(br.puc.pss.INF2125T2.model.Professor)}"
+									th:include="fragments/listar_colaborador_professor :: listar_colaborador_professor(${colaborador})">
+								</div>
+
+								<div
+									th:if="${colaborador instanceof T(br.puc.pss.INF2125T2.model.Pesquisador)}"
+									th:include="fragments/listar_colaborador_pesquisador :: listar_colaborador_pesquisador(${colaborador})">
+								</div>
+
+
+
+							</div>
+						</div>
+						<div class="card-action">
+							<div class="row">
+
+								<div class="input-field col m6 s6">
+									<small>Opções</small> 
+									<br />
+									<!--  <a
+										th:attr="href='#modalAtualizar' + ${colaborador.id}"
+										class="red-text confirmar modal-trigger">Atualizar</a>
+										 <a class="red-text confirmar modal-trigger">Excluir</a> --> 
+										<a th:href="@{'/colaborador/publicacoesDoColaborador/'+ ${colaborador.id} +'/'+ ${colaborador.tipoDeColaborador.participacao}}" class="waves-effect waves-light btn white-text"> 
+										Ver Produção Academica</a>
+										
+								</div>
+							</div>
+
+						</div>
+
+					</div>
+
+				</div>
+
+				<!-- <div th:attr="id='modalAtualizar' + ${colaborador.id}" class="modal">
+					<div class="modal-content">
+						<h5 th:text="| Atualizando o Colaborador ${colaborador.nome}|"></h5>
+
+						<p>Você está atualizando informações sobre o colaborador</p>
+					</div>
+					<form th:action="@{/colaborador/atualizarColaborador}"
+						method="post" th:object="${colaborador}">
+						<div class="modal-footer">
+
+							<div
+								th:if="${colaborador.tipoDeColaborador == T(br.puc.pss.INF2125T2.model.enumeration.TipoDeColaborador).ALUNO}"
+								th:include="fragments/atualizar_colaborador_aluno :: atualizar_colaborador_aluno(${colaborador})">
+							</div>
+
+							<div
+								th:if="${colaborador.tipoDeColaborador == T(br.puc.pss.INF2125T2.model.enumeration.TipoDeColaborador).PROFESSOR}"
+								th:include="fragments/atualizar_colaborador_professor :: atualizar_colaborador_professor(${colaborador})">
+							</div>
+
+							<div
+								th:if="${colaborador.tipoDeColaborador == T(br.puc.pss.INF2125T2.model.enumeration.TipoDeColaborador).PESQUISADOR}"
+								th:include="fragments/atualizar_colaborador_pesquisador :: atualizar_colaborador_pesquisador(${colaborador})">
+							</div>
+
+							<input type="hidden" name="idColaborador"
+								th:value="${colaborador.id}" />
+
+							<button type="submit"
+								class="modal-action modal-close waves-effect btn-flat">Confirmar</button>
+							<a href="#"
+								class="modal-action modal-close waves-effect btn-flat">Cancelar</a>
+						</div>
+					</form>
+				</div>
+ -->			</div>
+		</div>
+
+	</div>
+	<!-- footer -->
+	<div th:include="fragments/footer :: footer"></div>
+	<div th:include="fragments/CalendarioJS :: calendario"></div>
+	<script type="text/javascript" th:src="@{/js/modernizr.js}"></script>
+	<script type="text/javascript" th:src="@{/js/timeline.main.js}"></script>
+	<script type="text/javascript">
+		$(document)
+				.ready(
+						function() {
+
+							buscar = function(e, componente, elementoABuscar) {
+								var filtro = e;
+								var componente = componente;
+								var elementoABuscar = elementoABuscar;
+
+								var nomeFiltro = removerAcentos(filtro.value
+										.toLowerCase());
+								var componenteCompleto = document
+										.getElementsByClassName(componente);
+								var elemento = document
+										.getElementsByClassName(elementoABuscar);
+
+								for (var i = elemento.length - 1; i >= 0; i--) {
+									var conteudoBusca = removerAcentos(elemento[i].firstElementChild.innerHTML);
+									var corresponde = conteudoBusca
+											.toLowerCase().indexOf(nomeFiltro) >= 0;
+									componenteCompleto[i].style.display = corresponde ? ''
+											: 'none';
+
+								}
+
+							};
+						});
+
+		/**
+		 * Remove acentos de strings
+		 * @param  {String} string acentuada
+		 * @return {String} string sem acento
+		 */
+		var map = {
+			"â" : "a",
+			"Â" : "A",
+			"à" : "a",
+			"À" : "A",
+			"á" : "a",
+			"Á" : "A",
+			"ã" : "a",
+			"Ã" : "A",
+			"ê" : "e",
+			"Ê" : "E",
+			"è" : "e",
+			"È" : "E",
+			"é" : "e",
+			"É" : "E",
+			"î" : "i",
+			"Î" : "I",
+			"ì" : "i",
+			"Ì" : "I",
+			"í" : "i",
+			"Í" : "I",
+			"õ" : "o",
+			"Õ" : "O",
+			"ô" : "o",
+			"Ô" : "O",
+			"ò" : "o",
+			"Ò" : "O",
+			"ó" : "o",
+			"Ó" : "O",
+			"ü" : "u",
+			"Ü" : "U",
+			"û" : "u",
+			"Û" : "U",
+			"ú" : "u",
+			"Ú" : "U",
+			"ù" : "u",
+			"Ù" : "U",
+			"ç" : "c",
+			"Ç" : "C"
+		};
+
+		function removerAcentos(s) {
+			return s.replace(/[\W\[\] ]/g, function(a) {
+				return map[a] || a
+			})
+		};
+	</script>
+</body>
+</html>

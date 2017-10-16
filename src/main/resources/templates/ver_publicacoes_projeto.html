@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+   	<div th:include="fragments/head :: head"></div>
+  </head>
+  <body>
+	<div th:include="fragments/header :: header"></div>
+    
+    <div class="container page">
+      <div th:include="fragments/admin_projeto_menu_navegacao :: admin_projeto_menu_navegacao"></div>
+      <div class="row">
+      		<h4 class="col s12" th:text="| Publicações do Projeto ${projeto.titulo}|"></h4>
+		
+      </div>
+
+
+	<div class="row">
+			<div class="col s12">
+				<div class="input-field row">
+					<input placeholder="Procurando uma publicação em especifico?"
+						id="filtro-nome" type="text"
+						oninput="buscar(this,'card-stacked','card-content')"
+						class="col s11 validate" /><a
+						class="btn-floating btn-large waves-effect waves-light right">
+						<i class="material-icons">search</i>
+					</a>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="col s12" th:if="${#lists.isEmpty(publicacoes)}">
+			<div class="row">
+                        <div class="bs-callout bs-callout-primary" id="callout-glyphicons-location">
+                            <br />
+                            <p> Este projeto ainda não possui publicações cadastradas! Para incluir uma publicação favor acessar a gerenciamento de produção acadêmica.</p>
+                        </div>
+                    </div>
+		</div>
+		
+
+      <div class="col s12" th:if="${!#lists.isEmpty(publicacoes)}">
+			<div class="col s12 m7" th:each="publicacao : ${publicacoes}">
+				<div class="card horizontal">
+					<div class="card-stacked">
+						<div class="card-content">
+							<span class="card-title"
+								th:text="${publicacao.titulo}"></span>
+							<div class="row">
+								<div class="col s4">
+									<div
+										th:include="fragments/listar_autores :: listar-clean('Autor(es):', ${publicacao.autores})"></div>
+								</div>
+								<div class="col s4">
+									<p>
+										<b>Conferência: </b><span
+											th:text="${publicacao.nomeConferencia}"></span>
+									</p>
+									<p>
+										<b>Ano: </b><span
+											th:text="${publicacao.anoPublicacao}"></span>
+									</p>
+									</div>
+									<div class="col s4">
+									<p>
+										<b>Projeto de Pesquisa: </b>
+										<span th:if="${publicacao.projeto != null}" th:text="${publicacao.projeto.titulo}" ></span>
+										<span th:if="${publicacao.projeto == null}">Não esta associado a um projeto de pesquisa</span>
+										</p>
+								</div>
+
+								
+							</div>
+					
+
+						</div>
+					</div>
+					<!-- <div class="card-action">
+						<div class="row">
+
+							<div class="input-field col m6 s6">
+								<small>Opções</small>
+								 <br />
+								
+									<a th:attr="href='#modalAtualizar' + ${projeto.id}" class="red-text confirmar modal-trigger">Atualizar</a>
+									<a class="red-text confirmar modal-trigger">Excluir</a>
+							</div>
+
+						</div>
+
+					</div>
+ -->
+				</div>
+				
+				
+		
+				
+			</div>
+		</div>
+
+ 
+      
+    </div>
+    
+    <div th:include="fragments/footer :: footer"></div>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        
+        //Js para o dropdown
+        $('.dropdown-button').dropdown({
+            inDuration: 300,
+            outDuration: 225,
+            constrain_width: false, // Does not change width of dropdown to that of the activator
+            gutter: 0, // Spacing from edge
+            belowOrigin: false, // Displays dropdown below the button
+            alignment: 'left' // Displays dropdown with edge aligned to the left of button
+          }
+        );
+        
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<div th:include="fragments/head :: head"></div>
+
+</head>
+<body>
+	<div th:include="fragments/header :: header"></div>
+	<div class="container page">
+		<div
+th:include="fragments/admin_producao_academica_menu_navegacao :: admin_producao_academica_menu_navegacao"></div>
+
+
+		<div class="row">
+			<h3 class="col s12">Adicionar Publicação</h3>
+		</div>
+
+
+		<form th:action="@{'/producao/adicionarNovaPublicacao/'}" method="post"
+			th:object="${publicacao} ">
+
+			<div class="input-field col m6 s6">
+				<input type="text" id="titulo_publicacao" th:field="*{titulo}"
+					required="required" /> <label for="titulo_publicacao">Titulo</label>
+			</div>
+
+			<div class="row">
+
+				<div class="input-field col m6 s6">
+					<input type="text" id="publicacao_nome_conferencia"
+						th:field="*{nomeConferencia}" required="required" /> <label
+						for="publicacao_nome_conferencia">Nome da Conferência </label>
+				</div>
+
+				<div class="input-field col m6 s6">
+					<input type="number" id="ano_publicacao"
+						th:field="*{anoPublicacao}" required="required" /> <label
+						for="ano_publicacao">Ano</label>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col s12">
+					<div class="input-field col s6">
+
+						<div th:if="${#lists.isEmpty(projetos)}">
+
+							<span>Projeto vinculado:</span> <br /> <select
+								th:field="*{projeto}">
+								<option value="" th:disabled="disabled" th:selected="selected">Não
+									existe projeto cadastrado</option>
+							</select>
+						</div>
+
+						<div th:if="${!#lists.isEmpty(projetos)}">
+							<span>Projeto vinculado:</span> <br /> 
+							
+							<select
+								th:field="*{projeto}">
+								<option value="" th:disabled="disabled" th:selected="selected">Escolha
+									um projeto</option>
+								<option th:each="projeto, count : ${projetos}" th:id="${count.index}" th:name="idProjeto" th:value="${projeto.id}"
+									th:for="${count.index}" th:text="${projeto.titulo} "></option>
+							</select>
+
+
+
+						</div>
+					</div>
+
+					<div class="input-field col s6">
+
+						<div th:if="${#lists.isEmpty(colaboradores)}">
+
+							<span>Autores:</span> <br /> 
+							<select th:multiple="multiple"
+								required="required" th:field="*{autores}">
+								<option value="" th:disabled="disabled">Não existe colaboradores cadastrados.</option>
+							</select>			
+						</div>
+						
+						<div th:if="${!#lists.isEmpty(colaboradores)}">
+
+							<span>Autores:</span> <br /> <select th:multiple="multiple"
+								required="required" th:field="*{autores}">
+								<option value="" th:disabled="disabled">Escolha um ou
+									mais autores</option>
+
+								<option th:each="autor: ${colaboradores}" th:value="${autor.id}"
+									th:text="${autor.nome}"></option>
+							</select>
+
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+
+			<div class="input-field col s12">
+				<button type="submit"
+					class="waves-effect waves-light btn white-text">
+					Salvar Publicação<i aria-hidden="true" class="fa fa-floppy-o right"></i>
+				</button>
+			</div>
+		</form>
+
+	</div>
+
+	<div th:include="fragments/footer :: footer"></div>
+	<div th:include="fragments/CalendarioJS :: calendario"></div>
+</body>
+</html>

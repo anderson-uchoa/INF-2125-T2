@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<div th:include="fragments/head :: head"></div>
+</head>
+<body>
+	<div th:include="fragments/header :: header"></div>
+	<div class="container page">
+		<div
+			th:include="fragments/admin_projeto_menu_navegacao :: admin_projeto_menu_navegacao"></div>
+
+
+		<div class="row">
+			<h3 class="col s12">Adicionar Pesquisador</h3>
+		</div>
+		<form th:action="@{/colaborador/adicionarPesquisadorNovo}" method="post"
+			th:object="${pesquisador}">
+			<div class="input-field col m6 s6">
+				<input type="text" id="nome_pesquisador" th:field="*{nome}"
+					required="required" /> <label for="nome_pesquisador">Nome</label>
+			</div>
+
+			<div class="input-field col m6 s6">
+				<input id="email" type="text" th:field="*{email}"
+					required="required" /> <label for="email">E-mail</label>
+			</div>
+
+						<div class="input-field col s12">
+				<button type="submit"
+					class="waves-effect waves-light btn white-text">
+					Adicionar Pesquisador<i aria-hidden="true" class="fa fa-floppy-o right"></i>
+				</button>
+			</div>
+		</form>
+
+	</div>
+
+	<div th:include="fragments/footer :: footer"></div>
+	<div th:include="fragments/CalendarioJS :: calendario"></div>
+</body>
+</html>

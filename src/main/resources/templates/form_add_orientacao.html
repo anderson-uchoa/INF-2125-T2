@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<div th:include="fragments/head :: head"></div>
+</head>
+<body>
+	<div th:include="fragments/header :: header"></div>
+	<div class="container page">
+		<div
+			th:include="fragments/admin_producao_academica_menu_navegacao :: admin_producao_academica_menu_navegacao"></div>
+
+
+		<div class="row">
+			<h3 class="col s12">Adicionar Orientação</h3>
+		</div>
+		<form th:action="@{/producao/adicionarNovoOrientacao}" method="post"
+			th:object="${orientacao}">
+			<div class="input-field col m6 s6">
+				<input type="text" id="titulo_orientacao" th:field="*{titulo}"
+					required="required" /> <label for="titulo_orientacao">Titulo</label>
+			</div>
+
+			<div class="input-field col m5 s6">
+				<span>Tipo de Orientação:</span> <br /> 
+				<input name="group1" th:field="*{tipoDeOrientacao}"
+					id="orientacao_tese" th:value="TESE" type="radio" /> <label
+					for="orientacao_tese">Tese</label> 
+					
+					<input name="group1" th:field="*{tipoDeOrientacao}"
+					id="orientacao_dissertacao" th:value="DISSERTACAO" type="radio" /> <label
+					for="orientacao_dissertacao">Dissertação</label> 
+					
+					<input name="group1" th:field="*{tipoDeOrientacao}"
+					id="orientacao_tcc" th:value="TRABALHO_CONCLUSAO_CURSO" type="radio" /> <label
+					for="orientacao_tcc">Trabalho Conclusão de Curso</label>
+
+			</div>
+			<br />
+			<div class="input-field col m2 s6">
+				<div class="col s12" th:if="${#lists.isEmpty(alunos)}">
+					<span>Aluno:</span> <br /> 
+							<select required="required"  th:field="*{aluno}">
+								<option value="" th:disabled="disabled" th:selected="selected">Não existe Aluno cadastrado no sistema</option>
+						</select>
+				</div>
+				
+				<div class="col s12" th:if="${!#lists.isEmpty(alunos)}">
+					<div class="col s12 m7">
+						<div class="input-field col s12">
+							<span>Aluno:</span> <br /> 
+							<select required="required"  th:field="*{aluno}">
+								<option value="" th:disabled="disabled" th:selected="selected">Escolha
+									o aluno</option>
+								<option th:each="aluno : ${alunos}"
+									th:value="${aluno.id}" th:text="${aluno.nome}"></option>
+							</select>
+
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+						
+			<div class="input-field col m2 s6">
+				<div class="col s12" th:if="${#lists.isEmpty(professores)}">
+							<span>Orientador:</span> <br /> 
+							<select required="required"  th:field="*{professor}">
+								<option value="" th:disabled="disabled" th:selected="selected">Não existe professor cadastrado no sistema.</option>
+				</select>
+				
+				</div>
+				
+				<div class="col s12" th:if="${!#lists.isEmpty(professores)}">
+					<div class="col s12 m7">
+						<div class="input-field col s12">
+							<span>Orientador:</span> <br /> 
+							<select required="required"  th:field="*{professor}">
+								<option value="" th:disabled="disabled" th:selected="selected">Escolha
+									o orientador</option>
+								<option th:each="professor : ${professores}"
+									th:value="${professor.id}" th:text="${professor.nome}"></option>
+							</select>
+
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+
+			<div class="input-field col s12">
+				<button type="submit"
+					class="waves-effect waves-light btn white-text">
+					Salvar Orientação<i aria-hidden="true" class="fa fa-floppy-o right"></i>
+				</button>
+			</div>
+		</form>
+
+	</div>
+
+	<div th:include="fragments/footer :: footer"></div>
+	<div th:include="fragments/CalendarioJS :: calendario"></div>
+</body>
+</html>

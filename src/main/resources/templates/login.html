@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <div th:include="fragments/head :: head"></div></head>
+<body>
+  <nav class="purple darken-4" role="navigation">
+    <div class="nav-wrapper container">
+      <a id="logo-container" href="#" class="brand-logo center"><img th:src="@{/img/logo.png}" width="200px" alt="logo" /></a>
+    </div>
+  </nav>
+  <div class="parallax-container">
+    <div class="parallax"><img th:src="@{/img/papersubmit.png}" /></div>
+  </div>
+  <div class="section no-pad-bot" id="index-banner">
+    <div class="container">
+      <div class="row">
+        <h1 class="center header">Sistema de Gestão de Produtividade Acadêmica</h1>
+        <div class="col s12 m6">
+          <p>
+            
+			Seja bem vindo ao Sistema de Gestão de Produtividade Acadêmica, acesse o sistema com seu login e 
+			senha previamente cadastrado.
+          </p>
+          <p>
+            Tenha um gerenciamento da produtividade acadêmica de seu laboratório!
+          </p>
+        
+        </div>
+        <div class="col s12 m6" >
+          <form name="loginForm" th:action="@{/submitLogin}" class="valign" method="post">
+       
+            <div class="input-field">
+              <i class="material-icons prefix">account_circle</i>
+              <input type="text" id="user" th:name="username" />
+              <label for="user">Usuário (login)</label>
+            </div>
+
+            <div class="input-field">
+              <i class="material-icons prefix">vpn_key</i>
+              <input type="password" id="password" th:name="password" />
+              <label for="password">Senha</label>
+            </div>
+           
+            <button class="right btn waves-effect waves-light purple darken-4" type="submit">Entrar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div th:include="fragments/footer :: footer"></div>
+</body>
+</html>

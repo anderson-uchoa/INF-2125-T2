@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<body>
+	<div th:fragment="header">
+		<nav role="navigation" class="purple darken-4">
+			<div class="nav-wrapper container">
+					<div >
+					<a th:href="@{/dashboard}"><img th:src="@{/img/logo.png}" alt="Contest" width="200px" /></a>
+					<ul class="white-text right hide-on-med-and-down">
+						<li>
+							<div> <a th:href="@{/dashboard}"> Ir para Dashboard </a> </div>
+						</li>
+						
+						<li>
+						<div> <a th:href="@{/login}">Sair </a> </div>
+						</li>
+					</ul>
+				</div>
+				
+						
+				<!-- Dropdown Trigger -->
+				<div class="right">
+					<ul id="nav-mobile" class="side-nav">
+						<li><a href="#">Nome</a></li>
+						<li><a href="#">Sair&nbsp;<i class="fa fa-sign-out"
+								aria-hidden="true"></i></a></li>
+					</ul>
+					<a href="#" data-activates="nav-mobile" class="button-collapse"><i
+						class="material-icons">menu</i></a>
+				</div>
+
+			</div>
+			
+		</nav>
+	</div>
+</body>
+</html>

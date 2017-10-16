@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+</head>
+<body>
+    <div th:fragment="listar(label, projetos)">
+		<p th:unless="${#lists.isEmpty(projetos)}"><b th:text="${label}"></b></p>
+		<blockquote>
+		<p th:each="projeto : ${projetos}" 
+		th:if="${projeto.statusDoProjeto == T(br.puc.pss.INF2125T2.model.enumeration.StatusDoProjeto).CONCLUIDO}" th:text="${projeto.titulo}">Titulo do Projeto</p>
+	</blockquote>
+		</div>
+	
+	 <div th:fragment="listar-inline(label, projetos)">
+		<p th:unless="${#lists.isEmpty(projetos)}"><b th:text="${label}"></b></p>
+		<span th:each="projeto, count : ${projetos}"  
+			th:text="${count.index != (#lists.size(projetos) - 1)} ? |${projeto.titulo}, | : ${projeto.titulo}">Nome de projeto</span>
+	</div>
+	
+	<div th:fragment="listar-clean(label, projetos)">
+		<p th:unless="${#lists.isEmpty(projetos)}"><b th:text="${label}"></b></p>
+		<p th:each="projeto : ${projetos}" 
+		th:if="${projeto.statusDoProjeto == T(br.puc.pss.INF2125T2.model.enumeration.StatusDoProjeto).EM_ANDAMENTO}" th:text="${projeto.titulo}">Titulo do Projeto</p>
+	</div>
+</body>
+</html>
+	
+	
+	
+	
+	
